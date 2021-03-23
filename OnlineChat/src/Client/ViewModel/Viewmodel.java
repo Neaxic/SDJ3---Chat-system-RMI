@@ -1,11 +1,14 @@
 package Client.ViewModel;
 
-import Client.Model.ClientSocketHandler;
+import External.MessageClient;
+import External.MessageServer;
+import Test.ClientSocketHandler;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.beans.PropertyChangeEvent;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Viewmodel {
@@ -14,7 +17,7 @@ public class Viewmodel {
     StringProperty ReciveText;
     StringProperty chatters;
     StringProperty connections;
-    private ClientSocketHandler clientSocketHandler;
+    private MessageClient client;
     private int check = 0;
 
     public Viewmodel(){
@@ -40,7 +43,7 @@ public class Viewmodel {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                connections.setValue("Currently "+evt.getNewValue() +" connected!");
+                connections.setValue("Currently "+ ((ArrayList<MessageClient>) evt.getNewValue()).size() +" connected!");
             }
         });
     }
@@ -49,22 +52,26 @@ public class Viewmodel {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if(!(chatters.getValue().contains(evt.getNewValue().toString())) || chatters.getValue().equals("")){
-                    chatters.setValue(chatters.getValue()+ evt.getNewValue().toString() + "\n");
+                for(int i = 0; i < ((ArrayList<MessageClient>) evt.getNewValue()).size(); i++){
+                    try {
+                        if(chatters.getValue().contains(((ArrayList<MessageClient>) evt.getNewValue()).get(i).getNickname())) {
+                            continue;
+                        }
+                        chatters.setValue(chatters.getValue() + ((ArrayList<MessageClient>) evt.getNewValue()).get(i).getNickname() + "\n");
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                        System.out.println("empty");
+                    }
                 }
             }
         });
     }
 
-    public void setClientSocketHandler(ClientSocketHandler clientSocketHandler) {
-        this.clientSocketHandler = clientSocketHandler;
-        this.clientSocketHandler.addPropertyChangeListerner("Msg", this::updateArea);
-        this.clientSocketHandler.addPropertyChangeListerner("Connections", this::updateConnected);
-        this.clientSocketHandler.addPropertyChangeListerner("NicksConnected", this::updateConnectedNicks);
-    }
-
-    public StringProperty getTextField() {
-        return textField;
+    public void setClient(MessageClient client) throws RemoteException {
+        this.client = client;
+        this.client.addPropertyChangeListerner("Msg", this::updateArea);
+        this.client.addPropertyChangeListerner("NicksConnected", this::updateConnected);
+        this.client.addPropertyChangeListerner("NicksConnected", this::updateConnectedNicks);
     }
 
     public StringProperty getChatters(){
@@ -79,7 +86,7 @@ public class Viewmodel {
         return ReciveText;
     }
 
-    public void send(String msg){
-        clientSocketHandler.sendMessage(msg);
+    public void send(String msg) throws RemoteException {
+        client.sendMsg(msg);
     }
 }

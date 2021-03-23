@@ -1,17 +1,19 @@
 package Client.ViewModel;
 
-import Client.Model.ClientSocketHandler;
+import External.MessageClient;
+
+import java.rmi.RemoteException;
 
 public class ViewmodelSettings {
 
-    private ClientSocketHandler clientSocketHandler;
+    private MessageClient client;
 
-    public void setClientSocketHandler(ClientSocketHandler clientSocketHandler) {
-        this.clientSocketHandler = clientSocketHandler;
+    public void setClient(MessageClient client) {
+        this.client = client;
     }
 
-    public void saveBTN(String nickname){
-        clientSocketHandler.setNickname(nickname);
+    public void saveBTN(String nickname) throws RemoteException {
+        client.setNickname(nickname);
     }
 
 }

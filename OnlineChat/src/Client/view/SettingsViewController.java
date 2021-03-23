@@ -5,6 +5,8 @@ package Client.view;
         import javafx.scene.layout.Region;
         import Client.ViewModel.ViewmodelSettings;
 
+        import java.rmi.RemoteException;
+
 public class SettingsViewController
 {
     private ViewHandler viewHandler;
@@ -34,7 +36,7 @@ public class SettingsViewController
         return root;
     }
 
-    public void SaveBTN(){
+    public void SaveBTN() throws RemoteException {
         viewmodelSettings.saveBTN(nickname.getText());
         viewHandler.openView("chatbox");
     }

@@ -1,6 +1,6 @@
 package Client.core;
 
-import Client.Model.ClientSocketHandler;
+import Test.ClientSocketHandler;
 
 import java.io.IOException;
 

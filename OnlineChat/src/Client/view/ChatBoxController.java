@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import Client.ViewModel.Viewmodel;
 
+import java.rmi.RemoteException;
+
 public class ChatBoxController {
     private ViewHandler viewHandler;
     private Region root;
@@ -37,7 +39,7 @@ public class ChatBoxController {
         viewHandler.openView("settings");
     }
 
-    public void send(){
+    public void send() throws RemoteException {
         viewmodel.send(inputText.getText());
     }
 
