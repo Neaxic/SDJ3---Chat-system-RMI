@@ -2,7 +2,6 @@ package Client.ViewModel;
 
 import External.MessageClient;
 import External.MessageServer;
-import Test.ClientSocketHandler;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

@@ -1,19 +1,19 @@
 package Client.core;
 
-import Test.ClientSocketHandler;
+import Client.Model.RMIClient;
 
 import java.io.IOException;
 
 public class ModelFactory {
 
         //private TemperatureModel dataModel;
-        private ClientSocketHandler dataModel;
+        private RMIClient dataModel;
 
-    public void setDataModel(ClientSocketHandler dataModel) {
+    public void setDataModel(RMIClient dataModel) {
         this.dataModel = dataModel;
     }
 
-    public ClientSocketHandler getDataModel() throws IOException {
+    public RMIClient getDataModel() throws IOException {
             if(dataModel == null) {
                 //dataModel = new ClientSocketHandler() {
             }
